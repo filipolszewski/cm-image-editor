@@ -1,10 +1,7 @@
 from PIL import Image, ImageFont, ImageDraw, ImageEnhance
-from kivy.app import App
-from kivy.uix.button import Button
-from kivy.core.image import Image as kivyImg
 
 
-class ComeMeditate(App):
+class ComeMeditate():
 
     def change_contrast(self, img):
         factor = (259 * (self.contrast_level + 255)) / \
@@ -40,15 +37,10 @@ class ComeMeditate(App):
 
         source_img.save(output_filename)
 
-        texture = kivyImg('before.png').texture
-        with self.canvas:
-            Rectangle(texture=texture, pos=self.pos, size=self.size)
-
-        return Button(text='Hello World')
 
 if __name__ == '__main__':
     try:
-        ComeMeditate().run()
+        ComeMeditate().build()
         print("image created successfully.")
     except Exception:   # TODO: too broad
         print("sth went wrong. check for errors.")
