@@ -13,11 +13,12 @@ class MyForm(QWidget):
         self.ui = Ui_EditorForm()
         self.ui.setupUi(self)
         self._create_handlers(self.ui)
-
+        self.current_filepath = "/home/filip/come_meditate_channel/" \
+                                "cm-image-editor/"
         self.image_controller = EditorController(self.ui.image_container.frameGeometry())
         # these 2 lines just for testing!
-        self.image_controller.set_working_image("input/DSC_0429.JPG")
-        self.refresh_image_container()
+        # self.image_controller.set_working_image("input/DSC_0429.JPG")
+        # self.refresh_image_container()
 
     def _create_handlers(self, ui):
         ui.load_image_btn.clicked.connect(self.load_btn_click)
@@ -29,11 +30,11 @@ class MyForm(QWidget):
 
     def load_btn_click(self):
         filters = "Images (*.png *.jpg)"
-        filename, _ = QFileDialog.getOpenFileName(None, "Wybierz zdjęcie", "input/", filters)
-        if filename is not None:
+        filename, _ = QFileDialog.getOpenFileName(None, "Wybierz zdjęcie", self.current_filepath, filters)
+        if filename:
             self.clear()
-            self.current_filename = filename
-            self.image_controller.set_working_image(self.current_filename)
+            self.current_filepath = "/".join(filename.split('/')[:-1])
+            self.image_controller.set_working_image(filename)
             self.refresh_image_container()
 
     def save_btn_click(self):

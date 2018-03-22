@@ -12,7 +12,9 @@ class EditorController:
         self.monolith_checked = False
 
     def save_final_img(self):
-        save_path = "output/" + self.file_path.split("/")[-1]
+        # TODO save file dialog
+        save_path = "/home/filip/come_meditate_channel/" \
+                    "cm-image-editor/output/cm.jpg"
         if self.monolith_checked:
             self.draw_monolith(self.current_image).save(save_path)
         else:
@@ -22,7 +24,7 @@ class EditorController:
         self.file_path = filename
 
         # TODO Parametrize which part of image to cut(?)
-        img = Image.open(filename).convert("RGBA")
+        img = Image.open(filename).convert("RGB")
         # expected img size at this point - 4592x3072
         # 3072 -> 2583
         crop_rectangle = (0, 244, 4592, 2828)
@@ -36,11 +38,13 @@ class EditorController:
         if self.current_image is None:
             return None
         if self.monolith_checked:
-            return self._resize_to_cont(self.draw_monolith(self.current_image.copy()))
+            return self._resize_to_cont(self.draw_monolith(
+                self.current_image.copy()))
         return self._resize_to_cont(self.current_image.copy())
 
     def _resize_to_cont(self, current_image):
-        current_image.thumbnail((self.cont_width, self.cont_height), Image.ANTIALIAS)
+        current_image.thumbnail((self.cont_width, self.cont_height),
+                                Image.ANTIALIAS)
         return current_image
 
     def apply_changes(self):
@@ -51,8 +55,8 @@ class EditorController:
         return ImageEnhance.Color(img).enhance(0.0)
 
     def change_brightness_contrast(self, b_param, c_param):
-        b_factor = ((b_param / 123) + 1) * 1.2
-        c_factor = ((c_param / 123) + 1) * 1.2
+        b_factor = ((b_param / 123) + 1)
+        c_factor = ((c_param / 123) + 1)
         tmp_img = self.working_image.copy()
         enhancer_b = ImageEnhance.Brightness(tmp_img)
         tmp_img = enhancer_b.enhance(b_factor)
